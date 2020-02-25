@@ -307,6 +307,25 @@ public class ProcessConflictDetector {
         return NO_CONFLICT;
     }
 
+    //TODO: add conflict behaviour
+    /**
+     * Determines conflicts with the Ground Truth process
+     *
+     * @param currentProcesses Processes that are currently running
+     * @return Type of process conflict
+     */
+    public static int groundTruthConflict(List<String> currentProcesses, boolean inProcessFlow) {
+        if (currentProcesses.size() == 0)
+            return NO_CONFLICT;
+
+        if (currentProcesses.contains("training"))
+            return SAME_PROCESS;
+
+        if (currentProcesses.contains("processFlow"))
+            return PROCESS_FLOW;
+        return NO_CONFLICT;
+    }
+
     /**
      * Determines conflicts with the ProcessFlow process
      *

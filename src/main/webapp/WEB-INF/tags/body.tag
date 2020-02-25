@@ -46,7 +46,19 @@
 
             <li><a href="LineSegmentation">Line Segmentation</a></li>
             <li><a href="Recognition">Recognition</a></li>
-			<li><a href="GroundTruthProductionLarex">Ground Truth Production</a></li>
+            <li>
+                <ul class="collapsible collapsible-expandable">
+                    <li>
+                       <a class="collapsible-header">Ground Truth</a>
+                        <div class="collapsible-body">
+                            <ul>
+                                <li><a href="GroundTruthProductionLarex">Ground Truth Production</a></li>
+                                <li><a href="GroundTruthSearch">Ground Truth Search</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                </ul>
+            </li>
             <li><a href="Training">Training</a></li>
             <li><a href="Evaluation">Evaluation</a></li>
             <li><a href="PostCorrectionLarex">Post Correction</a></li>

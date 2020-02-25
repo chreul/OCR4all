@@ -46,6 +46,10 @@ public final class ProjectConfiguration {
      */
     public static final String PROJ_MODEL_DIR = "/var/ocr4all/models/";
     /**
+     * Corpus directory of the project
+     */
+    public static final String PROJ_CORPUS_DIR = "/var/ocr4all/corpus/";
+    /**
      * Model directory of the project containing the default models
      */
     public static final String PROJ_MODEL_DEFAULT_DIR = PROJ_MODEL_DIR + "default/";
