@@ -71,8 +71,7 @@ public class GroundTruthSearchController {
      * Response to the request to execute the process
      *
      * @param pageIds Ids of specified pages
-     * @param imageType Type of the images (binary,despeckled)
-     * @param replace If true, replaces the existing image files
+     * @param segmentationImageType Type of the images (binary,despeckled)
      * @param session Session of the user
      * @param response Response to the request
      * @param inProcessFlow Indicates if the process is executed within the ProcessFlow
@@ -140,11 +139,31 @@ public class GroundTruthSearchController {
      */
     @RequestMapping(value = "/ajax/groundTruthSearch/cancel", method = RequestMethod.POST)
     public @ResponseBody void cancel(HttpSession session, HttpServletResponse response) {
-        GroundTruthSearchHelper segmentationDummyHelper = provideHelper(session, response);
-        if (segmentationDummyHelper == null)
+        GroundTruthSearchHelper groundTruthSearchHelper = provideHelper(session, response);
+        if (groundTruthSearchHelper == null)
             return;
 
-        segmentationDummyHelper.cancelProcess();
+        groundTruthSearchHelper.cancelProcess();
+    }
+
+    /**
+     * Response to the request to check if old process related files exist
+     *
+     * @param pageIds Identifiers of the pages (e.g 0002,0003)
+     * @param session Session of the user
+     * @param response Response to the request
+     * @return Information if files exist
+     */
+    @RequestMapping(value = "/ajax/groundTruthSearch/exists" , method = RequestMethod.POST)
+    public @ResponseBody boolean filesExists(
+            @RequestParam("pageIds[]") String[] pageIds,
+            HttpSession session, HttpServletResponse response
+    ) {
+        GroundTruthSearchHelper groundTruthSearchHelper = provideHelper(session, response);
+        if (groundTruthSearchHelper == null)
+            return false;
+        //TODO: check if there are files
+        return groundTruthSearchHelper.doOldFilesExist();
     }
 
 }

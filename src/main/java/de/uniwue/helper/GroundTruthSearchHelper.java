@@ -11,6 +11,8 @@ import java.util.List;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 
+import de.uniwue.feature.ProcessHandler;
+import de.uniwue.feature.ProcessStateCollector;
 import org.opencv.core.Mat;
 import org.opencv.imgcodecs.Imgcodecs;
 import org.w3c.dom.Document;
@@ -41,6 +43,23 @@ public class GroundTruthSearchHelper {
      * Indicates if the process should be cancelled
      */
     private boolean stop = false;
+    /**
+     * Helper object for process handling
+     */
+    private ProcessHandler processHandler;
+    /**
+     * Object to use generic functionalities
+     */
+    private GenericHelper genericHelper;
+
+    /**
+     * Object to determine process states
+     */
+    private ProcessStateCollector procStateCol;
+
+    private int fileNo = -1;
+    private int filesSearched = -1;
+
 
     /**
      * Constructor
@@ -51,6 +70,9 @@ public class GroundTruthSearchHelper {
     public GroundTruthSearchHelper(String projDir, String projectImageType) {
         this.projectImageType = projectImageType;
         projConf = new ProjectConfiguration(projDir);
+        genericHelper = new GenericHelper(projConf);
+        procStateCol = new ProcessStateCollector(projConf, projectImageType);
+        processHandler = new ProcessHandler();
     }
 
     /**
@@ -67,30 +89,36 @@ public class GroundTruthSearchHelper {
         progress = 0;
 
         List<String> command = new ArrayList<String>();
-        command.add("--input");
         File corpusFolder = new File(projConf.PROJ_CORPUS_DIR);
 
         ArrayList<File> corpusFiles = new ArrayList<File>();
         // File depth of 1 -> no recursive (file)listing
-        Files.walk(Paths.get(projConf.PROJ_CORPUS_DIR), 1)
+        /*Files.walk(Paths.get(projConf.PROJ_CORPUS_DIR), 1)
                 .map(Path::toFile)
                 .filter(fileEntry -> fileEntry.isFile())
                 .filter(fileEntry -> fileEntry.getName().endsWith(".txt"))
                 .sorted()
                 .forEach(
-                        fileEntry -> { imageFiles.add(fileEntry); }
+                        fileEntry -> { corpusFiles.add(fileEntry); }
                 );
 
-        int fileNo = corpusFiles.size();
-        int filesSearched = 0;
+        */
+        fileNo = corpusFiles.size();
+        filesSearched = 0;
+        processHandler =  new ProcessHandler();
+/*
         for(File file : corpusFiles) {
-
-
-
+            command.add(file.getAbsolutePath());
+            System.out.println(file.getAbsolutePath());
+            processHandler.setFetchProcessConsole(true);
+            processHandler.startProcess("/opt/OCR4all_helper-scripts/test.py", command, false);
             filesSearched++;
-            progress=(int)(filesSearched/fileNo);
-        }
-
+            progress=(int)(filesSearched/fileNo)*100;
+        }*/
+        command.add(projConf.PROJ_CORPUS_DIR);
+        processHandler.setFetchProcessConsole(true);
+        processHandler.startProcess("testscript", command, false);
+        //getProgress();
         progress = 100;
     }
 
@@ -126,5 +154,24 @@ public class GroundTruthSearchHelper {
      */
     public int getConflictType(List<String> currentProcesses, boolean inProcessFlow) {
         return ProcessConflictDetector.groundTruthConflict(currentProcesses, inProcessFlow);
+    }
+
+    /**
+     * Gets the process handler object
+     *
+     * @return Returns the process Helper
+     */
+    public ProcessHandler getProcessHandler() {
+        return processHandler;
+    }
+
+    /**
+     * Checks if process depending files already exist
+     *
+     * @param pageIds Identifiers of the pages (e.g 0002,0003)
+     * @return Information if files exist
+     */
+    public boolean doOldFilesExist() {
+        return false;
     }
 }
