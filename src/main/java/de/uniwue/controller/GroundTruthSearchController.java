@@ -79,7 +79,7 @@ public class GroundTruthSearchController {
     @RequestMapping(value = "/ajax/groundTruthSearch/execute", method = RequestMethod.POST)
     public @ResponseBody void execute(
             @RequestParam("pageIds[]") String[] pageIds,
-            @RequestParam("imageType") String segmentationImageType,
+            @RequestParam("ngram") int ngram,
             HttpSession session, HttpServletResponse response,
             @RequestParam(value = "inProcessFlow", required = false, defaultValue = "false") boolean inProcessFlow
     ) {
@@ -93,7 +93,13 @@ public class GroundTruthSearchController {
 
         GenericController.addToProcessList(session, "segmentationDummy");
         try {
-            groundTruthSearchHelper.execute(Arrays.asList(pageIds), segmentationImageType);
+            //testing area
+                System.out.println("n-gram is: " + Integer.toString(ngram));
+                for(String pageId : pageIds) {
+                    System.out.println("got page: "+pageId);
+                }
+            //testing area
+            groundTruthSearchHelper.execute(Arrays.asList(pageIds), ngram);
         } catch (IOException | ParserConfigurationException | TransformerException e) {
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             groundTruthSearchHelper.resetProgress();

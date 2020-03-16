@@ -84,7 +84,7 @@ public class GroundTruthSearchHelper {
      * @throws TransformerException
      * @throws ParserConfigurationException
      */
-    public void execute(List<String> pageIds, String segmentationImageType) throws IOException, ParserConfigurationException, TransformerException {
+    public void execute(List<String> pageIds, int ngram) throws IOException, ParserConfigurationException, TransformerException {
         stop = false;
         progress = 0;
 

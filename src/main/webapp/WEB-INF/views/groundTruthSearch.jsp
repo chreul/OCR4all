@@ -34,7 +34,7 @@
                     $.post( "ajax/groundTruthSearch/exists", { "pageIds[]" : selectedPages } )
                         .done(function( data ) {
                             if(data === false) {
-                                var ajaxParams =  { "pageIds[]" : selectedPages, "imageType" : $('#imageType').val()};
+                                var ajaxParams =  { "pageIds[]" : selectedPages, "ngram" : $('#n-gram').val()};
                                 // Execute segmentation process
                                 executeProcess(ajaxParams);
                             }
@@ -51,6 +51,14 @@
                     var ajaxParams =  { "pageIds[]" : selectedPages, "imageType" : $('#imageType').val()};
                     // Execute segmentation process
                     executeProcess(ajaxParams);
+                });
+                //checking if n-gram input value si valid and disabling execute button if not
+                $('#n-gram').on('input', function(e) {
+                    if(!this.checkValidity()){
+                        $('#execute').addClass("disabled");
+                    }else{
+                        $('#execute').removeClass("disabled");
+                    }
                 });
             });
         </script>
