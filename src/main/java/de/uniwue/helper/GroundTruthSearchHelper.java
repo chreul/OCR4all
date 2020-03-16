@@ -106,7 +106,7 @@ public class GroundTruthSearchHelper {
         fileNo = corpusFiles.size();
         filesSearched = 0;
         processHandler =  new ProcessHandler();
-/*
+        /*
         for(File file : corpusFiles) {
             command.add(file.getAbsolutePath());
             System.out.println(file.getAbsolutePath());
@@ -117,7 +117,7 @@ public class GroundTruthSearchHelper {
         }*/
         command.add(projConf.PROJ_CORPUS_DIR);
         processHandler.setFetchProcessConsole(true);
-        processHandler.startProcess("testscript", command, false);
+        processHandler.startProcess("gtsearch", command, false);
         //getProgress();
         progress = 100;
     }
